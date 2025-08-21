@@ -1,0 +1,22 @@
+class SqlDb {
+  static Future<void> createTables(sql.Database database) async{
+    //
+    await database.execute("""CREATE TABLE items(
+      id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+      title TEXT,
+      description TEXT,
+      createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    )
+    """);
+  }
+  static Future<sql.Database> db() async{
+    return sql.openDatabase(
+      'dbteste.db',
+      version: 1,
+      onCreate: (sql.Database database, int version) async {
+        await createTables(database);
+      },
+    )
+  }
+
+}
